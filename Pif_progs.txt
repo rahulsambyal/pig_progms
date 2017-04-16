@@ -1,0 +1,44 @@
+1) Concat
+loading = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+a = foreach loading generate concat(id,sal);
+
+2) Tokenize
+words = foreach loading generate flatten(tokenize(line)) as word;
+
+3) Sum
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = group a by name;
+c = foreach b generate group, sum(a.sal);
+
+4) Min
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = group a by name;
+c = foreach b generate group, min(a.sal);
+
+5) Max
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = group a by name;
+c = foreach b generate group, min(a.sal);
+
+6) Limit
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = foreach a generate id, name;
+c = limit b 2;
+
+7) Store
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = foreach a generate id, name;
+c = limit b 2;
+store c into '/home/cloudera/family';
+
+8) Distinct
+a = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+b = distinct a;
+
+9) Flatten
+a = load '/home/cloudera/family.txt' as (line:chararray);
+words = foreach a generate flatten(tokenize(line)) as word;
+
+10) IsEmpty
+loading = load '/home/cloudera/family.txt' as (id:int, name:chararray, sal:int);
+filter loading by isempty(id);
